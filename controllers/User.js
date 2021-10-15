@@ -10,7 +10,25 @@ exports.signup = (req, res, next) => {
             username: req.body.username,
             password: hash,
             contact : req.body.contact,
-            isAdmin : req.body.isAdmin
+            isAdmin : req.body.isAdmin,
+            profile : req.body.profile,
+            registration : req.body.registration,
+            registrationType : req.body.registrationType,
+            email : req.body.email,
+            phone : req.body.phone,
+            phonePoste : req.body.phonePoste,
+            mobile : req.body.mobile,
+            title : req.body.title,
+            matricule : req.body.matricule,
+            company : req.body.company,
+            department : req.body.department,
+            site : req.body.site,
+            local : req.body.local,
+            creationDate : req.body.creationDate,
+            creationUser : req.body.creationUser,
+            updateDate : req.body.updateDate,
+            updateUser : req.body.updateUser,
+            isActive : req.body.isActive
         })
         user.save()
         .then(()=> res.status(200).json({message: 'user created'}))
