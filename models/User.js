@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema({
     creationDate : {type: String},
     creationUser : {type: Object},
     updateDate : {type: String},
-    updateUser : {type: String},
+    updateUser : {type: Object},
     isActive : {type: Boolean, required : true, default:1},
 })
 
