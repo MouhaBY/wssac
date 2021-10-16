@@ -6,8 +6,10 @@ const User = require('../models/User')
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
+        let username = req.body.username;
+        let USERNAME = username.toUpperCase();
         const user = new User({
-            username: req.body.username,
+            username: USERNAME,
             password: hash,
             contact : req.body.contact,
             isAdmin : req.body.isAdmin,
@@ -38,7 +40,9 @@ exports.signup = (req, res, next) => {
 }
 
 exports.login = (req, res, next) => {
-    User.findOne({ username : req.body.username })
+    let username = req.body.username;
+    let USERNAME = username.toUpperCase();
+    User.findOne({ username : USERNAME })
     .then(user => {
         if (!user){
             return res.status(401).json({error : 'user not found'})
@@ -69,20 +73,70 @@ exports.getOneUser = (req, res, next) => {
 }
 
 exports.modifyUser = (req, res, next) => {
+    let username = req.body.username;
+    let USERNAME = username.toUpperCase();
+    if(req.body.password===""){
+        const user = new User({
+            _id: req.params.id,
+            username: USERNAME,
+            contact : req.body.contact,
+            isAdmin : req.body.isAdmin,
+            profile : req.body.profile,
+            registration : req.body.registration,
+            registrationType : req.body.registrationType,
+            email : req.body.email,
+            phone : req.body.phone,
+            phonePoste : req.body.phonePoste,
+            mobile : req.body.mobile,
+            title : req.body.title,
+            matricule : req.body.matricule,
+            company : req.body.company,
+            department : req.body.department,
+            site : req.body.site,
+            local : req.body.local,
+            creationDate : req.body.creationDate,
+            creationUser : req.body.creationUser,
+            updateDate : req.body.updateDate,
+            updateUser : req.body.updateUser,
+            isActive : req.body.isActive
+        })
+        User.updateOne({_id: req.params.id}, user)
+        .then(() => { res.status(201).json({ message: 'User updated successfully!' }) })
+        .catch((error) => { res.status(400).json({ error }) })
+    }
+    else {
     bcrypt.hash(req.body.password, 10)
-    .then(hash => { const user = new User({
-        _id: req.params.id,
-        username: req.body.username,
-        password: hash,
-        contact: req.body.contact,
-        isAdmin: req.body.isAdmin,
-      }); 
-    
-    User.updateOne({_id: req.params.id}, user)
-    .then(() => { res.status(201).json({ message: 'User updated successfully!' }) })
-    .catch((error) => { res.status(400).json({ error }) })
-    })
-    .catch(error => res.status(500).json({ error }))
+    .then(hash => { 
+        const user = new User({
+            _id: req.params.id,
+            username: USERNAME,
+            password: hash,
+            contact : req.body.contact,
+            isAdmin : req.body.isAdmin,
+            profile : req.body.profile,
+            registration : req.body.registration,
+            registrationType : req.body.registrationType,
+            email : req.body.email,
+            phone : req.body.phone,
+            phonePoste : req.body.phonePoste,
+            mobile : req.body.mobile,
+            title : req.body.title,
+            matricule : req.body.matricule,
+            company : req.body.company,
+            department : req.body.department,
+            site : req.body.site,
+            local : req.body.local,
+            creationDate : req.body.creationDate,
+            creationUser : req.body.creationUser,
+            updateDate : req.body.updateDate,
+            updateUser : req.body.updateUser,
+            isActive : req.body.isActive
+        }); 
+        User.updateOne({_id: req.params.id}, user)
+        .then(() => { res.status(201).json({ message: 'User updated successfully!' }) })
+        .catch((error) => { res.status(400).json({ error }) })
+    }).catch(error => res.status(500).json({ error }))
+    }
 }
 
 exports.deleteUser = (req, res, next) => {
